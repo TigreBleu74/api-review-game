@@ -1,4 +1,4 @@
-import {Controller, Get, Path, Route, Tags} from 'tsoa';
+import { Body, Controller, Get, Path, Post, Route, Tags } from 'tsoa';
 import { ReviewDTO } from '../dto/review.dto';
 import { reviewService } from '../services/review.service';
 
@@ -13,5 +13,13 @@ export class ReviewController extends Controller {
   @Get('{id}')
   public async getReviewById(@Path() id: number): Promise<ReviewDTO | null> {
     return reviewService.getReviewById(id);
+  }
+
+  @Post('/')
+  public async createReview(
+    @Body() requestBody: ReviewDTO
+  ): Promise<ReviewDTO> {
+    const { review_text, rating, game_id } = requestBody;
+    return reviewService.createReview(review_text, rating, game_id);
   }
 }
