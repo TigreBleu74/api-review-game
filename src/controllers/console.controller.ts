@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Delete, Route, Path, Body, Tags, Patch } from "tsoa";
 import { consoleService } from "../services/console.service";
 import { ConsoleDTO } from "../dto/console.dto";
-import {gameService} from '../services/game.service';
-import {GameDTO} from '../dto/game.dto';
+import { gameService } from '../services/game.service';
+import { GameDTO } from '../dto/game.dto';
 
 @Route("consoles")
 @Tags("Consoles")
