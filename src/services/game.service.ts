@@ -57,6 +57,20 @@ export class GameService {
     }
     notFound('Game');
   }
+
+  public async getGamesByConsoleId(id: number): Promise<GameDTO[]> {
+    return Game.findAll({
+      where: {
+        console_id: id,
+      },
+      include: [
+        {
+          model: Console,
+          as: "console",
+        },
+      ],
+    });
+  }
 }
 
 export const gameService = new GameService();
