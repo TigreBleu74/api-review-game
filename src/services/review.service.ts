@@ -53,6 +53,28 @@ export class ReviewService {
     }
     return Review.create({ review_text: review_text, rating: rating, game_id: game_id });
   }
+
+  public async updateReview(id: number, review_text: string, rating: number, game_id: number | undefined): Promise<Review | null> {
+    const review: Review | null = await Review.findByPk(id);
+    if (review) {
+      if (review_text) review.review_text = review_text;
+      if (rating) {
+        if (rating < 0 || rating > 10) {
+          badRequest('Rating must be between 0 and 10');
+        }
+        review.rating = rating;
+      }
+      if (game_id) {
+        if (!await Game.findByPk(game_id)) {
+          notFound('Game');
+        }
+        review.game_id = game_id;
+      }
+      await review.save();
+      return review;
+    }
+    notFound('Review');
+  }
 }
 
 export const reviewService = new ReviewService();
