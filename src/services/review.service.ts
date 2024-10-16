@@ -84,6 +84,20 @@ export class ReviewService {
       notFound('Review');
     }
   }
+
+  public async getReviewByGameId(id: number): Promise<ReviewDTO[]> {
+    return Review.findAll({
+      where: {
+        game_id: id
+      },
+      include: [
+        {
+          model: Game,
+          as: "game"
+        }
+      ]
+    });
+  }
 }
 
 export const reviewService = new ReviewService();
