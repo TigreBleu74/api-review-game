@@ -29,7 +29,7 @@ export class ConsoleController extends Controller {
   }
 
   // Supprime une console par ID
-  @Delete("{id}")
+  @Delete('{id}')
   public async deleteConsole(@Path() id: number): Promise<void> {
     await consoleService.deleteConsole(id);
   }
