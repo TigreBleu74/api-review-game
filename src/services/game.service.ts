@@ -2,6 +2,8 @@ import { GameDTO } from "../dto/game.dto";
 import { Console } from "../models/console.model";
 import { Game } from "../models/game.model";
 import { notFound } from '../error/NotFoundError';
+import { Review } from '../models/review.model';
+import { preconditionRequired } from '../error/PreconditionRequiredError';
 
 export class GameService {
   public async getAllGames(): Promise<GameDTO[]> {
@@ -69,6 +71,23 @@ export class GameService {
         },
       ],
     });
+  }
+
+  public async deleteGame(id: number): Promise<void> {
+    const game: Game | null = await Game.findByPk(id);
+    if (game) {
+      const reviews: Review[] = await Review.findAll({
+        where: {
+          game_id: id
+        }
+      });
+      if (reviews.length > 0) {
+        preconditionRequired('Reviews');
+      }
+      await game.destroy();
+    } else {
+      notFound('Game');
+    }
   }
 }
 
